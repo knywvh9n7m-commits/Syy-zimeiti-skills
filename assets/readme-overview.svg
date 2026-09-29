@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="300" viewBox="0 0 1200 300" role="img" aria-labelledby="title desc">
+  <title id="title">从社媒信息到创作行动</title>
+  <desc id="desc">用公开样本发现方向、理解内容和用户需求，再形成有依据的选题与行动建议。</desc>
+  <rect width="1200" height="300" rx="20" fill="#f5f7f6"/>
+  <g font-family="'Microsoft YaHei','PingFang SC','Noto Sans CJK SC',sans-serif">
+    <text x="38" y="48" fill="#305c50" font-size="17" font-weight="700" letter-spacing="2">SYY · SOCIAL MEDIA RESEARCH</text>
+    <text x="38" y="102" fill="#172f27" font-size="38" font-weight="700">看清方向，理解需求，做出有依据的选择。</text>
+    <rect x="38" y="140" width="350" height="120" rx="12" fill="#ffffff" stroke="#dce4df"/>
+    <rect x="424" y="140" width="350" height="120" rx="12" fill="#ffffff" stroke="#dce4df"/>
+    <rect x="810" y="140" width="350" height="120" rx="12" fill="#e5eee8" stroke="#c8dbcd"/>
+    <text x="60" y="178" fill="#305c50" font-size="24" font-weight="700">01　发现方向</text>
+    <text x="60" y="216" fill="#53655c" font-size="22">赛道 · 趋势 · 对标账号</text>
+    <text x="446" y="178" fill="#305c50" font-size="24" font-weight="700">02　理解需求</text>
+    <text x="446" y="216" fill="#53655c" font-size="22">内容表现 · 评论 · 内容空白</text>
+    <text x="832" y="178" fill="#244b37" font-size="24" font-weight="700">03　形成行动</text>
+    <text x="832" y="216" fill="#3e5b48" font-size="22">选题建议 · 适配理由 · 素材</text>
+    <path d="M396 198h18m-7-6 7 6-7 6M782 198h18m-7-6 7 6-7 6" fill="none" stroke="#8caa97" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+</svg>
