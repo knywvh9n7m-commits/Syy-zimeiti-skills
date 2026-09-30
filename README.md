@@ -313,7 +313,3 @@ TikHub 是可选连接，可能收费。未提供单价时费用脚本只给出�
 | 更多请求示例与接入说明 | [示例](skills/syy-zimeiti-skills/examples/prompts.md) · [Skill 使用说明](skills/syy-zimeiti-skills/README.md) |
 | 当前已有的验证与适用范围 | [验证记录](VALIDATION.md) |
 | 数据使用与第三方服务说明 | [数据使用边界](skills/syy-zimeiti-skills/references/safety.md) · [第三方说明](skills/syy-zimeiti-skills/THIRD_PARTY_NOTICES.md) |
-
-## 来源与许可
-
-本项目基于 [Pongfi-Skills](https://github.com/s15039733700-cpu/Pongfi-Skills) 的 `pongfi-research` 改编，以 `syy-zimeiti-skills` 作为 Skill 标识，保留原作者版权声明与 [MIT 许可](LICENSE)。具体来源版本和修改见 [来源与改编说明](skills/syy-zimeiti-skills/ATTRIBUTION.md)。TikHub 的服务、商标、价格和条款独立于本 Skill。
