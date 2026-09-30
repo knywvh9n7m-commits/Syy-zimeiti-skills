@@ -8,7 +8,7 @@
 
 中文研究交付 · 11 种研究模式 · 按需组合 · 保留原始证据
 
-**适用平台：Codex · WorkBuddy · 豆包工作。** 本 Skill 采用 `SKILL.md` 结构，可在支持导入自定义 Skill 的版本中使用。各平台的导入入口、脚本运行和数据读取权限可能不同；目前已验证 Codex 的离线流程，WorkBuddy 和豆包工作尚待实机验证。
+**适用平台：Codex · WorkBuddy · 豆包工作。** 本 Skill 采用 `SKILL.md` 结构，可在支持导入自定义 Skill 的版本中使用。默认通过当前宿主已有的公开网页搜索、浏览器和用户资料做研究，不要求 TikHub Key 或 Python。Codex 与 WorkBuddy 各自消耗其宿主约定的 AI 用量；AI 额度不能抵扣第三方数据接口费用。两边可访问的平台页面和字段取决于实际工具与权限；WorkBuddy 实机运行尚待验证。
 
 ### 从找爆款，到写出自己的视频初稿
 
@@ -104,7 +104,7 @@
 
 ## 这些功能怎么串起来
 
-没有配置 TikHub Key 时，Syy 可以先检查本地连接状态。如果你给出抖音公开主页或视频链接，且当前工具能够读取页面，仍可围绕**这些指定链接**整理作品和可见数据；有多个同账号作品且能读到点赞数时，可比较相对点赞表现。它不代表全站搜索，也不能推出缺失的播放量或评论。没有可用工具时，会说明可用资料和下一步采样方案。
+默认不检查 TikHub Key，也不调用付费数据接口。Syy 会用当前宿主可用的公开网页能力检索，打开原始页面核对发布时间和可见指标；只有指定链接可读时，就只研究这些链接。搜索索引不代表平台全量内容，缺失的播放量、评论或完播不会推算。没有可用网页工具时，会说明可用资料和下一步采样方案。详细方法见 [公开网页采样](skills/syy-zimeiti-skills/references/public-web.md)。
 
 一次研究的基本顺序是：**说清目标 → 验证小样本 → 按需分析 → 给出结论和建议。**
 
@@ -248,18 +248,18 @@ $syy-zimeiti-skills
 
 ## 安装与准备
 
-### 1. 把 Skill 放进 Codex（其他平台按各自的导入流程操作）
+### 1. 把 Skill 放进 Codex 或 WorkBuddy
 
 下载本仓库，将 **`skills/syy-zimeiti-skills` 整个文件夹**复制到个人 Codex 的 `skills` 目录，保留其中的脚本、参考资料、模板和许可文件。
 
 默认目录为 `~/.codex/skills/`；Windows 通常是 `C:\Users\你的用户名\.codex\skills\`。自定义过 `CODEX_HOME` 时，使用该目录下的 `skills` 文件夹。安装后从下一轮对话开始使用。
 
-WorkBuddy 和豆包工作的自定义 Skill 导入入口、文件格式要求与权限随版本而异；本仓库尚未对这两端进行实机安装验证，请按客户端当前提示导入整个 Skill 文件夹并核对能否调用。
+WorkBuddy 可在 **技能 → 添加技能 → 上传技能** 导入 [WorkBuddy 版压缩包](dist/syy-zimeiti-skills-workbuddy-0.2.0.zip)；[官方技能说明](https://www.workbuddy.cn/docs/workbuddy/From-Beginner-to-Expert-Guide/Function-Description/Skills-Market)列出了该入口。也可执行 `python scripts/package_workbuddy.py --out dist/syy-zimeiti-skills-workbuddy-0.2.0.zip` 从同一正文重新生成该包。两个版本仅入口字段不同，研究规则相同。导入后在“已安装”中启用，再用一个公开网页研究任务核对实际搜索能力和输出。豆包工作的导入流程仍需按其客户端当前提示操作。WorkBuddy 实机调用尚待验证。
 
 最终结构应是：
 
 ```text
-个人 Codex skills 目录/
+Codex skills 目录或 WorkBuddy 导入的技能包/
 └── syy-zimeiti-skills/
     ├── SKILL.md
     ├── agents/
@@ -274,9 +274,9 @@ WorkBuddy 和豆包工作的自定义 Skill 导入入口、文件格式要求与
 
 | 你有什么 | 怎么开始 |
 |---|---|
-| **当前已连接的公开数据工具** | 说明研究主题与平台，使用可用工具进行采样 |
+| **Codex 或 WorkBuddy 自带的公开网页能力** | 说明研究主题与平台，先验证可访问页面和字段，再按实际覆盖采样；默认路径无需另购数据接口 |
 | **自己收集的帖子、评论、截图或数据文件** | 提供资料，分析其中可核实的内容；截图只支持画面可见的信息 |
-| **希望使用 TikHub 连接** | 准备自己的账户、网络与 `TIKHUB_API_KEY`，确认平台覆盖和费用后调用 |
+| **明确希望使用 TikHub 连接** | 另外授权该数据服务及费用后，再按[可选付费数据连接](skills/syy-zimeiti-skills/references/paid-data.md)使用；宿主 AI 额度无法支付 TikHub |
 | **暂时没有平台数据** | 先整理研究简报、采样计划或分析已有资料，明确哪些判断仍需验证 |
 
 平台可以指定抖音、小红书、B 站、YouTube、TikTok、Reddit 等；**实际能采集哪些平台、哪些字段，以你使用的数据工具、权限与当前服务为准**。平台选择建议见 [平台指南](skills/syy-zimeiti-skills/references/platforms.md)。
@@ -288,7 +288,7 @@ WorkBuddy 和豆包工作的自定义 Skill 导入入口、文件格式要求与
 <details>
 <summary>技术说明：Python、TikHub 与四个辅助脚本</summary>
 
-执行配套脚本需要 Python 3.9 或更高版本；脚本只使用 Python 标准库，无需第三方 Python 包。以下命令从仓库根目录进入 Skill 文件夹后执行；如果 `python` 不在 PATH，用已有 Python 可执行文件的完整路径替代。
+默认公开网页路径不需要 Python。只有处理结构化数据或明确选择付费数据连接时，才需要 Python 3.9 或更高版本；脚本只使用 Python 标准库。以下命令从仓库根目录进入 Skill 文件夹后执行；如果 `python` 不在 PATH，用已有 Python 可执行文件的完整路径替代。
 
 ```powershell
 Set-Location .\skills\syy-zimeiti-skills
@@ -304,14 +304,14 @@ python -m unittest discover -s tests -v
 | `normalize.py` | 按明确的字段映射整理原始数据 |
 | `score_posts.py` | 计算有效互动指标与同平台账号样本内的相对表现 |
 
-TikHub 连接需要在本地设置环境变量。示例中的 `YOUR_API_KEY` 是占位符，真实密钥请仅保存在本地。
+下列 TikHub 命令只适用于你另外明确授权该服务及其费用的情况。示例中的 `YOUR_API_KEY` 是占位符，真实密钥请仅保存在本地。
 
 ```powershell
 $env:TIKHUB_API_KEY = 'YOUR_API_KEY'
 python scripts\tikhub_mcp.py discover --platform douyin --query 'search video keyword'
 ```
 
-具体工具名与参数以当前返回的 schema 为准。Windows 下 JSON 参数可写入本地文件，再使用 `--args-file`。完整命令和执行顺序见 [SKILL.md](skills/syy-zimeiti-skills/SKILL.md)。
+具体工具名与参数以当前返回的 schema 为准。Windows 下 JSON 参数可写入本地文件，再使用 `--args-file`。完整边界见 [可选付费数据连接](skills/syy-zimeiti-skills/references/paid-data.md)。
 
 TikHub 是可选连接，可能收费。未提供单价时费用脚本只给出请求量和“价格未知”；显式输入单价后的金额仅为假设性估算。
 
@@ -322,7 +322,7 @@ TikHub 是可选连接，可能收费。未提供单价时费用脚本只给出�
 - **结论对应实际样本。** 近期话题线索、搜索结果和公开互动各有用途；增长、完播或转化判断需要相应数据支持。
 - **缺失数据会明确保留。** 不用点赞推算播放，不从标题或封面还原原始口播稿。
 - **选题会考虑你自己的条件。** 对标帮助理解问题与方法，创作采用自己的经验、素材和表达；没有账号信息时，适配判断会标为暂定。
-- **效果与接入需分别验证。** 仓库有离线验证记录，真实平台采集和 TikHub 账户连接仍需实际验证；研究建议不承诺流量、涨粉或收益。
+- **效果与接入需分别验证。** Codex 已完成公开网页研究流程验证；WorkBuddy 的 Skill 结构与网页能力有[官方文档](https://open.workbuddy.cn/en/docs/skill)、[插件说明](https://www.workbuddy.cn/docs/workbuddy/Plugins)，但此版本尚未在用户的 WorkBuddy 中实机测试。研究建议不承诺流量、涨粉或收益。
 
 <a id="docs"></a>
 

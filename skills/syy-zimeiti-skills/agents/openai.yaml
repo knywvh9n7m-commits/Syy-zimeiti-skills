@@ -1,4 +1,4 @@
 interface:
   display_name: "Syy-zimeiti-skills"
   short_description: "研究社媒趋势、对标账号和评论需求，给出有证据且适合账号的选题"
-  default_prompt: "使用 $syy-zimeiti-skills 研究我指定的平台和主题，先做小样本验证，再给出附来源、账号适配理由和证据局限的选题。"
+  default_prompt: "使用 $syy-zimeiti-skills 研究我指定的平台和主题。默认用当前宿主的公开网页能力，不调用付费数据接口；先验证小样本，再给出来源、账号适配理由和证据局限。"
