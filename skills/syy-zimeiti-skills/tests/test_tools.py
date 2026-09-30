@@ -1,5 +1,6 @@
 import importlib.util
 import json
+import os
 import pathlib
 import unittest
 
@@ -22,6 +23,19 @@ normalize = load_script("normalize.py")
 
 
 class TestMcpHelpers(unittest.TestCase):
+    def test_status_checks_presence_without_exposing_key(self):
+        previous = os.environ.get("TIKHUB_API_KEY")
+        try:
+            os.environ["TIKHUB_API_KEY"] = "  "
+            self.assertFalse(mcp.has_api_key())
+            os.environ["TIKHUB_API_KEY"] = "test-only-secret"
+            self.assertTrue(mcp.has_api_key())
+        finally:
+            if previous is None:
+                os.environ.pop("TIKHUB_API_KEY", None)
+            else:
+                os.environ["TIKHUB_API_KEY"] = previous
+
     def test_tool_search(self):
         tools = [
             {"name": "douyin_search_video", "description": "search videos by keyword", "inputSchema": {}},
@@ -79,6 +93,24 @@ class TestScoring(unittest.TestCase):
         out = score_posts.enrich(rows)
         self.assertAlmostEqual(out[0]["relative_performance"], 0.5)
         self.assertAlmostEqual(out[1]["relative_performance"], 1.5)
+        self.assertEqual(out[0]["relative_performance_basis"], "views")
+
+    def test_likes_baseline_only_when_views_missing(self):
+        rows = [
+            {"platform": "douyin", "author_id": "a", "views": None, "likes": 100},
+            {"platform": "douyin", "author_id": "a", "views": None, "likes": 300},
+            {"platform": "douyin", "author_id": "b", "views": None, "likes": 900},
+        ]
+        out = score_posts.enrich(rows)
+        self.assertEqual([row["relative_performance"] for row in out], [0.5, 1.5, 1.0])
+        self.assertEqual([row["relative_performance_basis"] for row in out], ["likes"] * 3)
+        self.assertTrue(all(row["engagement_rate"] is None for row in out))
+
+    def test_invalid_likes_do_not_create_relative_performance(self):
+        rows = [{"platform": "douyin", "author_id": "a", "views": None, "likes": -1}]
+        out = score_posts.enrich(rows)
+        self.assertIsNone(out[0]["relative_performance"])
+        self.assertIsNone(out[0]["relative_performance_basis"])
 
 
 class TestNormalize(unittest.TestCase):

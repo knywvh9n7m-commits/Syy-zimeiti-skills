@@ -19,13 +19,19 @@ def num(value):
 
 
 def enrich(rows):
-    by_author = defaultdict(list)
+    by_author_views = defaultdict(list)
+    by_author_likes = defaultdict(list)
     for row in rows:
         views = num(row.get("views"))
+        likes = num(row.get("likes"))
         key = (row.get("platform"), row.get("author_id") or row.get("author_name"))
-        if views is not None and key[1]:
-            by_author[key].append(views)
-    medians = {k: statistics.median(v) for k, v in by_author.items() if v}
+        if key[1]:
+            if views is not None:
+                by_author_views[key].append(views)
+            if likes is not None:
+                by_author_likes[key].append(likes)
+    view_medians = {k: statistics.median(v) for k, v in by_author_views.items()}
+    like_medians = {k: statistics.median(v) for k, v in by_author_likes.items()}
 
     output = []
     for row in rows:
@@ -38,14 +44,20 @@ def enrich(rows):
         x["engagement_rate"] = None
         x["view_follower_ratio"] = None
         x["relative_performance"] = None
+        x["relative_performance_basis"] = None
         if views is not None and views > 0 and all(v is not None for v in (likes, comments, shares)):
             x["engagement_rate"] = (likes + comments + shares) / views
         if views is not None and followers is not None and followers > 0:
             x["view_follower_ratio"] = views / followers
         key = (row.get("platform"), row.get("author_id") or row.get("author_name"))
-        baseline = medians.get(key)
-        if views is not None and baseline is not None and baseline > 0:
-            x["relative_performance"] = views / baseline
+        view_baseline = view_medians.get(key)
+        like_baseline = like_medians.get(key)
+        if views is not None and view_baseline is not None and view_baseline > 0:
+            x["relative_performance"] = views / view_baseline
+            x["relative_performance_basis"] = "views"
+        elif views is None and likes is not None and like_baseline is not None and like_baseline > 0:
+            x["relative_performance"] = likes / like_baseline
+            x["relative_performance_basis"] = "likes"
         output.append(x)
     return output
 

@@ -35,6 +35,11 @@ def _auth_key() -> str:
     return key
 
 
+def has_api_key() -> bool:
+    """Report credential presence without revealing its value or contacting a service."""
+    return bool(os.getenv("TIKHUB_API_KEY", "").strip())
+
+
 def _parse_sse_or_json(body: bytes, content_type: str) -> dict[str, Any]:
     text = body.decode("utf-8", errors="replace").strip()
     if not text:
@@ -194,6 +199,7 @@ def main() -> int:
     parser = argparse.ArgumentParser(description="TikHub MCP helper for Syy-zimeiti-skills")
     sub = parser.add_subparsers(dest="command", required=True)
 
+    sub.add_parser("status")
     sub.add_parser("health")
     sub.add_parser("platforms")
 
@@ -216,7 +222,9 @@ def main() -> int:
 
     args = parser.parse_args()
     try:
-        if args.command == "health":
+        if args.command == "status":
+            write_or_print({"has_api_key": has_api_key()}, None)
+        elif args.command == "health":
             write_or_print(_get_json(f"{base_url()}/health"), None)
         elif args.command == "platforms":
             write_or_print(_get_json(f"{base_url()}/platforms"), None)

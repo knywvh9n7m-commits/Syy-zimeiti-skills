@@ -7,6 +7,7 @@ Prefer platform-local and account-local baselines.
 - Engagement rate: `(likes + comments + shares) / views`
 - View/follower ratio: `views / followers`
 - Relative performance: `post views / median recent views for the same account`
+- When views are unavailable but public likes exist, use `post likes / median recent likes for the same account` as a separate directional measure. Always report `relative_performance_basis` as `views` or `likes`; never compare values from different bases or call the likes-based value an engagement rate.
 
 Do not compute a metric when its required fields are missing.
 
